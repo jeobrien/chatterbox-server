@@ -2,7 +2,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 
 var mongo = require('mongoskin');
-var db = mongo.db('mongodb://localhost:27017/database'); 
+var db = mongo.db('mongodb://localhost:27017/chatterbox'); 
 db.bind('messages');
 
 var app = express();
@@ -34,6 +34,7 @@ app.get('/classes/messages', function (req, res) {
 
 app.post('/classes/messages', function (req, res) {
     var message = req.body;
+    message.createdAt = Date.now();
     db.messages.insert(message, function(err, result) {
         if (err) throw err;
         if (result) console.log('Added!'); res.sendStatus(201);

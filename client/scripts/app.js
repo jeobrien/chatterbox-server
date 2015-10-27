@@ -68,13 +68,13 @@ var app = {
       url: app.server,
       type: 'GET',
       contentType: 'application/json',
-      // data: { order: '-createdAt'},
+      data: { order: '-createdAt'},
       success: function(data) {
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) {  app.stopSpinner(); return; }
 
         // Get the last message
-        var mostRecentMessage = data.results[0];
+        var mostRecentMessage = data.results[data.results.length-1];
         var displayedRoom = $('.chat span').first().data('roomname');
         app.stopSpinner();
         // Only bother updating the DOM if we have a new message
@@ -172,7 +172,7 @@ var app = {
       $message.text(data.text).appendTo($chat);
 
       // Add the message to the UI
-      app.$chats.append($chat);
+      app.$chats.prepend($chat);
     }
   },
 
