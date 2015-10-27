@@ -1,6 +1,9 @@
 var bodyParser = require('body-parser');
 var express = require('express');
-var fs = require('fs');
+
+var mongo = require('mongoskin');
+var db = mongo.db('mongodb://localhost:27017/database'); 
+db.bind('messages');
 
 var app = express();
 
@@ -19,32 +22,22 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 app.get('/classes/messages', function (req, res) {
-  console.log('GET request');
-  fs.readFile('./server/database.json', function (err, data) {
-    if (err) {
-      throw err;
-    }
-    var messages = JSON.parse(data);
+  
+  var messages = db.messages.find().toArray(function(err, items) {
+    if (err) throw err;
     var reply = {
-      results: messages
+      results: items
     };
     res.send(reply);
   });
 });
 
 app.post('/classes/messages', function (req, res) {
-  fs.readFile('./server/database.json', function(err, data) {
-    if (err) {
-      throw err;
-    }
-
-    var messages = JSON.parse(data);
-    messages.unshift(req.body);
-    fs.writeFile('./server/database.json', JSON.stringify(messages), function() {
-      console.log('Wrote new message to database.json');
-      res.sendStatus(201);
-    });
-  });
+    var message = req.body;
+    db.messages.insert(message, function(err, result) {
+        if (err) throw err;
+        if (result) console.log('Added!'); res.sendStatus(201);
+    });  
 });
 
 var port = 3000;
