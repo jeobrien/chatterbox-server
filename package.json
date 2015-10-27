@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server/basic-server.js",
     "test": "mocha server/spec",
-    "serve": "node-inspector & nodemon --debug server/express-server.js"
+    "serve": "node-inspector & nodemon --debug server/express-server.js --ignore server/database.json"
   },
   "devDependencies": {
     "mocha": "^1.21.4",
