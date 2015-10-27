@@ -6,11 +6,16 @@
   "license": "Copyright 2013, Hack Reactor. All rights reserved.",
   "scripts": {
     "start": "node server/basic-server.js",
-    "test": "mocha server/spec"
+    "test": "mocha server/spec",
+    "serve": "node-inspector & nodemon --debug server/express-server.js"
   },
   "devDependencies": {
     "mocha": "^1.21.4",
     "request": "^2.34.0",
     "chai": "^1.9.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3"
   }
 }
